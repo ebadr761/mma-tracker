@@ -117,8 +117,8 @@ pip install -r requirements.txt
 cp .env.example .env
 
 # Edit .env and add your MongoDB URI and secret key
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/mma_tracker?retryWrites=true&w=majority
-# SECRET_KEY=your-secure-random-secret-key
+# MONGODB_URI= u get it right lol i wont show u this
+# SECRET_KEY= this is big secret bratha
 ```
 
 Generate a secure secret key:

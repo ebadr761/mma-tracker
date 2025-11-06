@@ -1,6 +1,6 @@
 # Quick Setup Guide
 
-This guide will get you up and running in 10 minutes!
+This guide will get you up and running in 10 minutes! Even if this project isn't deployed to a website yet you can test it out yourself! Just use the free MongoDB cluster option!!!
 
 ## 1. Prerequisites Check
 
@@ -24,11 +24,6 @@ Make sure you have:
    - Copy the connection string
    - Replace `<password>` with your actual password
    - Replace `myFirstDatabase` with `mma_tracker`
-
-Your connection string should look like:
-```
-mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/mma_tracker?retryWrites=true&w=majority
-```
 
 ## 3. Backend Setup (3 minutes)
 
