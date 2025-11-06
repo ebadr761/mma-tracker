@@ -10,7 +10,7 @@ class Config:
     MONGODB_URI = os.getenv('MONGODB_URI')
 
     # Flask Configuration
-    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-this')
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
     # Session Configuration
     SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'False') == 'True'
