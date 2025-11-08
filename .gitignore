@@ -6,11 +6,18 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+backend.log
+frontend.log
 
 node_modules
 dist
 dist-ssr
 *.local
+
+# Migration files
+MIGRATION_COMPLETE.md
+SETUP.md 
+UPGRADE_GUIDE.md 
 
 # Editor directories and files
 .vscode/*
@@ -28,13 +35,7 @@ dist-ssr
 .env.local
 .env.production
 
-# Backend Python
-backend/venv/
-backend/__pycache__/
-backend/*.pyc
-backend/*.pyo
-backend/*.pyd
-backend/.Python
-backend/env/
-backend/ENV/
-backend/.venv/
+# Backend TypeScript
+backend-ts/node_modules/
+backend-ts/dist/
+backend-ts/.env

@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Plus, Trash2, TrendingUp, Clock, Zap, Calendar, LogOut, User, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, TrendingUp, Clock, Zap, Calendar, LogOut, User, AlertCircle, Wifi, WifiOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { workoutsAPI } from '../services/api';
+import { socketService } from '../services/socket';
+import { Workout } from '../types';
 
 const disciplines = ['Boxing', 'Wrestling', 'BJJ', 'Muay Thai', 'Strength & Conditioning', 'Cardio', 'Mobility', 'Sprints', 'Squats', 'Bench Press'];
-const colors = {
+
+const colors: Record<string, string> = {
   'Boxing': '#EF4444',
   'Wrestling': '#3B82F6',
   'BJJ': '#8B5CF6',
@@ -18,28 +21,85 @@ const colors = {
   'Bench Press': '#8B5CF6'
 };
 
+interface FormData {
+  discipline: string;
+  duration: string;
+  intensity: number;
+  notes: string;
+}
+
+interface ChartData {
+  name: string;
+  hours: number;
+  [key: string]: string | number;
+}
+
+interface TimelineData {
+  date: string;
+  sessions: number;
+  hours: number;
+  [key: string]: string | number;
+}
+
 export default function Dashboard() {
   const { user, logout } = useAuth();
-  const [workouts, setWorkouts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     discipline: 'Boxing',
     duration: '',
     intensity: 7,
     notes: ''
   });
 
-  const [activeTab, setActiveTab] = useState('log');
+  const [activeTab, setActiveTab] = useState<'log' | 'history' | 'analytics'>('log');
 
   // Fetch workouts on mount
   useEffect(() => {
     fetchWorkouts();
   }, []);
 
-  const fetchWorkouts = async () => {
+  // Set up Socket.IO real-time updates
+  useEffect(() => {
+    setIsSocketConnected(socketService.isConnected());
+
+    const handleWorkoutCreated = (workout: Workout) => {
+      console.log('🔔 Real-time: Workout created', workout);
+      setWorkouts(prev => [workout, ...prev]);
+      setSuccessMessage('New workout added (real-time)');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    };
+
+    const handleWorkoutUpdated = (workout: Workout) => {
+      console.log('🔔 Real-time: Workout updated', workout);
+      setWorkouts(prev => prev.map(w => w.id === workout.id ? workout : w));
+      setSuccessMessage('Workout updated (real-time)');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    };
+
+    const handleWorkoutDeleted = (data: { id: string }) => {
+      console.log('🔔 Real-time: Workout deleted', data.id);
+      setWorkouts(prev => prev.filter(w => w.id !== data.id));
+      setSuccessMessage('Workout deleted (real-time)');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    };
+
+    socketService.onWorkoutCreated(handleWorkoutCreated);
+    socketService.onWorkoutUpdated(handleWorkoutUpdated);
+    socketService.onWorkoutDeleted(handleWorkoutDeleted);
+
+    return () => {
+      socketService.offWorkoutCreated(handleWorkoutCreated);
+      socketService.offWorkoutUpdated(handleWorkoutUpdated);
+      socketService.offWorkoutDeleted(handleWorkoutDeleted);
+    };
+  }, []);
+
+  const fetchWorkouts = async (): Promise<void> => {
     try {
       setLoading(true);
       const data = await workoutsAPI.getAll();
@@ -53,7 +113,7 @@ export default function Dashboard() {
     }
   };
 
-  const addWorkout = async () => {
+  const addWorkout = async (): Promise<void> => {
     if (!formData.duration) {
       setError('Please enter duration');
       return;
@@ -64,33 +124,43 @@ export default function Dashboard() {
       const data = await workoutsAPI.create({
         discipline: formData.discipline,
         duration: parseInt(formData.duration),
-        intensity: parseInt(formData.intensity),
+        intensity: formData.intensity,
         notes: formData.notes
       });
 
-      setWorkouts([data.workout, ...workouts]);
+      // Only add to local state if not using real-time updates
+      // Real-time will handle it via socket
+      if (!socketService.isConnected()) {
+        setWorkouts([data.workout, ...workouts]);
+      }
+
       setFormData({ discipline: 'Boxing', duration: '', intensity: 7, notes: '' });
       setSuccessMessage('Workout logged successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to add workout');
       console.error('Add workout error:', err);
     }
   };
 
-  const deleteWorkout = async (id) => {
+  const deleteWorkout = async (id: string): Promise<void> => {
     try {
       await workoutsAPI.delete(id);
-      setWorkouts(workouts.filter(w => w.id !== id));
+
+      // Only remove from local state if not using real-time updates
+      if (!socketService.isConnected()) {
+        setWorkouts(workouts.filter(w => w.id !== id));
+      }
+
       setSuccessMessage('Workout deleted successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to delete workout');
       console.error('Delete workout error:', err);
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     await logout();
   };
 
@@ -100,13 +170,13 @@ export default function Dashboard() {
   const totalSessions = workouts.length;
 
   // Discipline breakdown
-  const disciplineData = disciplines.map(d => ({
+  const disciplineData: ChartData[] = disciplines.map(d => ({
     name: d,
     hours: Math.round((workouts.filter(w => w.discipline === d).reduce((sum, w) => sum + w.duration, 0) / 60) * 10) / 10
   })).filter(d => d.hours > 0);
 
   // Timeline data (last 7 days)
-  const last7Days = Array.from({ length: 7 }, (_, i) => {
+  const last7Days: TimelineData[] = Array.from({ length: 7 }, (_, i) => {
     const date = new Date();
     date.setDate(date.getDate() - (6 - i));
     const dateStr = date.toISOString().split('T')[0];
@@ -136,7 +206,18 @@ export default function Dashboard() {
         {/* Header */}
         <div className="mb-8 flex justify-between items-start">
           <div>
-            <h1 className="text-4xl font-bold mb-2">MMA Athletic Disciplines Manager</h1>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-4xl font-bold">MMA Athletic Disciplines Manager</h1>
+              {isSocketConnected ? (
+                <span className="flex items-center gap-1 text-xs text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
+                  <Wifi className="w-3 h-3" /> Real-time
+                </span>
+              ) : (
+                <span className="flex items-center gap-1 text-xs text-slate-400 bg-slate-400/10 px-2 py-1 rounded-full">
+                  <WifiOff className="w-3 h-3" /> Offline
+                </span>
+              )}
+            </div>
             <p className="text-slate-400">Welcome back, {user?.username}! Track your training and dominate your goals</p>
           </div>
           <button
@@ -266,7 +347,7 @@ export default function Dashboard() {
                   min="1"
                   max="10"
                   value={formData.intensity}
-                  onChange={(e) => setFormData({ ...formData, intensity: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, intensity: parseInt(e.target.value) })}
                   className="w-full"
                 />
               </div>
@@ -277,7 +358,7 @@ export default function Dashboard() {
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder="What did you work on? How did you feel?"
-                  rows="3"
+                  rows={3}
                   className="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-3 text-white focus:border-blue-500 focus:outline-none"
                 />
               </div>

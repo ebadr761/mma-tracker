@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { UserPlus, User, Mail, Lock, AlertCircle, CheckCircle } from 'lucide-react';
 
-export default function Register({ onToggleForm }) {
+interface RegisterProps {
+  onToggleForm: () => void;
+}
+
+export default function Register({ onToggleForm }: RegisterProps) {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -13,7 +17,7 @@ export default function Register({ onToggleForm }) {
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setError('');
 
@@ -35,14 +39,25 @@ export default function Register({ onToggleForm }) {
       return;
     }
 
-    setLoading(true);
+    try {
+      setLoading(true);
+      const result = await register(formData.username, formData.email, formData.password);
 
-    const result = await register(formData.username, formData.email, formData.password);
-
-    if (!result.success) {
-      setError(result.error);
+      if (!result.success) {
+        setError(result.error || 'Registration failed. Please try again.');
+      }
+      // If success, user will be automatically logged in and redirected by AuthContext
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
       setLoading(false);
     }
+  };
+
+  // Clear error when user starts typing
+  const handleInputChange = (field: string, value: string) => {
+    setFormData({ ...formData, [field]: value });
+    if (error) setError('');
   };
 
   return (
@@ -77,10 +92,10 @@ export default function Register({ onToggleForm }) {
                 <input
                   type="text"
                   value={formData.username}
-                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  onChange={(e) => handleInputChange('username', e.target.value)}
                   placeholder="fighter123"
                   required
-                  minLength="3"
+                  minLength={3}
                   className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition"
                 />
               </div>
@@ -95,7 +110,7 @@ export default function Register({ onToggleForm }) {
                 <input
                   type="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
                   placeholder="your@email.com"
                   required
                   className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition"
@@ -112,10 +127,10 @@ export default function Register({ onToggleForm }) {
                 <input
                   type="password"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
                   placeholder="At least 6 characters"
                   required
-                  minLength="6"
+                  minLength={6}
                   className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition"
                 />
               </div>
@@ -130,7 +145,7 @@ export default function Register({ onToggleForm }) {
                 <input
                   type="password"
                   value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                   placeholder="Confirm your password"
                   required
                   className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition"

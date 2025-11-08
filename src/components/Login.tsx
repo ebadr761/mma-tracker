@@ -1,24 +1,40 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
 
-export default function Login({ onToggleForm }) {
+interface LoginProps {
+  onToggleForm: () => void;
+}
+
+export default function Login({ onToggleForm }: LoginProps) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
-    const result = await login(formData.email, formData.password);
+    try {
+      setLoading(true);
+      const result = await login(formData.email, formData.password);
 
-    if (!result.success) {
-      setError(result.error);
+      if (!result.success) {
+        setError(result.error || 'Invalid email or password. Please try again.');
+      }
+      // If success, user will be automatically logged in and redirected by AuthContext
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
       setLoading(false);
     }
+  };
+
+  // Clear error when user starts typing
+  const handleInputChange = (field: 'email' | 'password', value: string) => {
+    setFormData({ ...formData, [field]: value });
+    if (error) setError('');
   };
 
   return (
@@ -53,9 +69,10 @@ export default function Login({ onToggleForm }) {
                 <input
                   type="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
                   placeholder="your@email.com"
                   required
+                  autoComplete="email"
                   className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition"
                 />
               </div>
@@ -70,9 +87,10 @@ export default function Login({ onToggleForm }) {
                 <input
                   type="password"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
                   placeholder="Enter your password"
                   required
+                  autoComplete="current-password"
                   className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition"
                 />
               </div>
