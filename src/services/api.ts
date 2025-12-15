@@ -5,25 +5,39 @@ import {
   AuthResponse,
   WorkoutsResponse,
   WorkoutResponse,
-  WorkoutStats
+  WorkoutStats,
+  MLInsights
 } from '../types';
 
 // Create axios instance with base configuration
 const api: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api',
-  withCredentials: true,
+  baseURL: 'http://localhost:8000/api', // Python FastAPI default port
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request interceptor for error handling
+// Request interceptor to inject Token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       // Handle unauthorized access
       console.log('Unauthorized access - redirecting to login');
+      // Optional: Clear token
+      localStorage.removeItem('token');
     }
     return Promise.reject(error);
   }
@@ -33,26 +47,28 @@ api.interceptors.response.use(
 export const authAPI = {
   register: async (username: string, email: string, password: string): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>('/auth/register', { username, email, password });
+    if (response.data.access_token) {
+      localStorage.setItem('token', response.data.access_token);
+    }
     return response.data;
   },
 
   login: async (email: string, password: string): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>('/auth/login', { email, password });
+    if (response.data.access_token) {
+      localStorage.setItem('token', response.data.access_token);
+    }
     return response.data;
   },
 
   logout: async (): Promise<{ message: string }> => {
-    const response = await api.post<{ message: string }>('/auth/logout');
-    return response.data;
+    // Client-side logout mainly
+    localStorage.removeItem('token');
+    return { message: 'Logout successful' };
   },
 
   getCurrentUser: async (): Promise<{ user: User }> => {
     const response = await api.get<{ user: User }>('/auth/me');
-    return response.data;
-  },
-
-  checkAuth: async (): Promise<{ authenticated: boolean }> => {
-    const response = await api.get<{ authenticated: boolean }>('/auth/check');
     return response.data;
   },
 };
@@ -88,6 +104,14 @@ export const workoutsAPI = {
     const response = await api.get<{ stats: WorkoutStats }>('/workouts/stats/summary');
     return response.data;
   },
+};
+
+// ML API
+export const mlAPI = {
+  getInsights: async (): Promise<MLInsights> => {
+    const response = await api.get<MLInsights>('/ml/insights');
+    return response.data;
+  }
 };
 
 export default api;

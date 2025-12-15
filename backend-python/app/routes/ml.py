@@ -1,0 +1,29 @@
+from fastapi import APIRouter, Depends
+from app.database import db
+from app.routes.deps import get_current_user
+from app.models.user import UserInDB
+from app.ml.engine import MLEngine
+
+router = APIRouter()
+
+@router.get("/insights")
+async def get_insights(current_user: UserInDB = Depends(get_current_user)):
+    # Fetch all user workouts
+    cursor = db.get_db().workouts.find({"userId": current_user.id})
+    workouts = await cursor.to_list(length=1000) # Analyze last 1000 sessions
+    
+    # Clean data for engine
+    workout_data = []
+    for w in workouts:
+        w_dict = dict(w)
+        w_dict["_id"] = str(w_dict["_id"])
+        w_dict["userId"] = str(w_dict["userId"])
+        workout_data.append(w_dict)
+    
+    engine = MLEngine(workout_data)
+    
+    return {
+        "weaknesses": engine.analyze_weaknesses(),
+        "burnout": engine.predict_burnout(),
+        "focus": engine.get_recommended_focus()
+    }
