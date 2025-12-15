@@ -76,27 +76,27 @@ export const authAPI = {
 // Workouts API
 export const workoutsAPI = {
   getAll: async (limit: number = 100, skip: number = 0): Promise<WorkoutsResponse> => {
-    const response = await api.get<WorkoutsResponse>('/workouts', { params: { limit, skip } });
+    const response = await api.get<WorkoutsResponse>('/workouts/', { params: { limit, skip } });
     return response.data;
   },
 
   getById: async (id: string): Promise<WorkoutResponse> => {
-    const response = await api.get<WorkoutResponse>(`/workouts/${id}`);
+    const response = await api.get<WorkoutResponse>(`/workouts/${id}/`);
     return response.data;
   },
 
   create: async (workoutData: WorkoutInput): Promise<WorkoutResponse> => {
-    const response = await api.post<WorkoutResponse>('/workouts', workoutData);
+    const response = await api.post<WorkoutResponse>('/workouts/', workoutData);
     return response.data;
   },
 
   update: async (id: string, workoutData: Partial<WorkoutInput>): Promise<WorkoutResponse> => {
-    const response = await api.put<WorkoutResponse>(`/workouts/${id}`, workoutData);
+    const response = await api.put<WorkoutResponse>(`/workouts/${id}/`, workoutData);
     return response.data;
   },
 
   delete: async (id: string): Promise<{ message: string }> => {
-    const response = await api.delete<{ message: string }>(`/workouts/${id}`);
+    const response = await api.delete<{ message: string }>(`/workouts/${id}/`);
     return response.data;
   },
 

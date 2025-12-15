@@ -141,7 +141,8 @@ export default function Dashboard() {
         discipline: formData.discipline,
         duration: parseInt(formData.duration),
         intensity: formData.intensity,
-        notes: formData.notes
+        notes: formData.notes,
+        date: new Date().toISOString().split('T')[0]
       });
 
       // Only add to local state if not using real-time updates
