@@ -13,7 +13,9 @@
 
 ## 🎯 Overview
 
-MMA Tracker is an intelligent training companion for martial artists. Unlike standard loggers, it uses Machine Learning (Scikit-Learn) to analyze your training patterns, identifying overlooked disciplines (Cluster Analysis) and predicting burnout risk (ACWR Regression).
+FightMetrics is an intelligent training companion for martial artists (and athletes in general!). Unlike standard loggers, it uses Machine Learning (Scikit-Learn) to analyze your training patterns, identifying overlooked disciplines (Cluster Analysis) and predicting burnout risk (ACWR Regression). 
+
+Use it like a simple workout tracker. You log workouts, add notes for each workout and choose a type of workout based on several disciplines (weightlifting, running, Muay Thai, BJJ, wrestling, etc.)
 
 **Key Highlights:**
 - 🧠 **AI-Powered Insights**: Get automatic recommendations on where to focus your training.
