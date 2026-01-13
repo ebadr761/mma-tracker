@@ -61,7 +61,7 @@ export default function Register({ onToggleForm }: RegisterProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-8 shadow-2xl">
           {/* Header */}
@@ -76,7 +76,7 @@ export default function Register({ onToggleForm }: RegisterProps) {
           {/* Error Message */}
           {error && (
             <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg flex items-center gap-3 text-red-400">
-              <AlertCircle className="w-5 h-5 flex-shrink-0" />
+              <AlertCircle className="w-5 h-5 shrink-0" />
               <p className="text-sm">{error}</p>
             </div>
           )}
