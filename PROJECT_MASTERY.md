@@ -72,4 +72,4 @@ The frontend is a Single Page Application (SPA). It runs in the user's browser.
 - **React/TypeScript** was chosen for the Frontend for its massive ecosystem and type safety.
 - **FastAPI** bridges the gap, offering the speed of Go/Node.js with the simplicity of Python.
 
-This project demonstrates **Full-Stack Competency**: You aren't just building a UI; you are building an intelligent data pipeline.
+This project demonstrates **Full-Stack Competency**: it's not just a UI; it's an intelligent data pipeline.
