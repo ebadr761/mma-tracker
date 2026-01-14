@@ -67,6 +67,15 @@ The application uses specific ML techniques to improve athlete performance:
 - **Function**: Compares your last 7 days of load (Acute) vs. last 28 days (Chronic).
 - **Goal**: Flags when you are training dangerously harder than your body is conditioned for, predicting injury risk.
 
+#### 🧮 How it Works (The Math)
+We calculate Load as `Duration (min) × Intensity (1-10)`.
+1.  **Acute Load**: Average daily load over the last 7 days.
+2.  **Chronic Load**: Average daily load over the last 28 days.
+3.  **ACWR**: `Acute Load / Chronic Load`
+
+> **The "Sweet Spot"**: Sports science suggests an ACWR between **0.8 and 1.3** is optimal for progress. A ratio **> 1.5** (the "Danger Zone") significantly increases injury risk because you are doing 50% more work than your body is conditioned for.
+
+
 ### 3. Focus Recommender
 - **Algorithm**: Rule-based Classification
 - **Function**: Suggests specific disciplines to train next based on recent neglect.
@@ -121,6 +130,19 @@ The application uses specific ML techniques to improve athlete performance:
     npm run dev
     ```
 4.  Open your browser to `http://localhost:5173`.
+
+### 🐳 Docker Deployment (Unified)
+
+Deploy the entire full-stack application (Frontend + Backend + Database) with one command.
+
+1.  **Build and Run**:
+    ```bash
+    docker-compose up --build
+    ```
+2.  **Access App**:
+    - Frontend: http://localhost:8000 (Served via FastAPI static files)
+    - API Docs: http://localhost:8000/docs
+
 
 ---
 
