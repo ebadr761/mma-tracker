@@ -42,3 +42,25 @@ app.include_router(ml.router, prefix="/api/ml", tags=["ML"])
 @app.get("/api/health")
 async def health_check():
     return {"status": "healthy", "backend": "python-fastapi"}
+
+# Serve Frontend in Production
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Mount static files if directory exists (for Docker build)
+static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
+if os.path.exists(static_dir):
+    app.mount("/assets", StaticFiles(directory=os.path.join(static_dir, "assets")), name="assets")
+    
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        # API routes are already handled above due to order
+        # If file exists in static, serve it (e.g. favicon.ico)
+        possible_file = os.path.join(static_dir, full_path)
+        if os.path.isfile(possible_file):
+             return FileResponse(possible_file)
+        
+        # Otherwise serve index.html for React Router
+        return FileResponse(os.path.join(static_dir, "index.html"))
+
