@@ -22,17 +22,32 @@ class MLEngine:
         all_disciplines = [
             'Boxing', 'Wrestling', 'BJJ', 'Muay Thai', 
             'Strength & Conditioning', 'Cardio', 'Mobility', 
-            'Sprints', 'Squats', 'Bench Press'
+            'Sprints'
         ]
         
         insights = []
         
-        # 1. Identify neglected disciplines (bottom 3 or 0)
+        # 1. Identify neglected disciplines (never tried)
         trained_disciplines = discipline_stats.index.tolist()
         neglected = [d for d in all_disciplines if d not in trained_disciplines]
         
         if neglected:
             insights.append(f"Consider trying: {', '.join(neglected[:3])}")
+        else:
+            # 2. Identify underrepresented disciplines (< 10% of total time)
+            total_duration = discipline_stats.sum()
+            underrepresented = []
+            for d in all_disciplines:
+                d_duration = discipline_stats.get(d, 0)
+                percentage = (d_duration / total_duration) * 100
+                if percentage < 10:
+                    underrepresented.append((d, percentage))
+            
+            if underrepresented:
+                # Sort by lowest percentage first
+                underrepresented.sort(key=lambda x: x[1])
+                weak_areas = [f"{d} ({p:.0f}%)" for d, p in underrepresented[:3]]
+                insights.append(f"Underrepresented areas: {', '.join(weak_areas)}")
         
         # 2. Identify 'High Intensity, Low Duration' vs 'Low Intensity, High Duration' outliers
         # We can use clustering here if we have enough data (e.g. > 10 workouts)

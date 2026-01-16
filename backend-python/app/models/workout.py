@@ -6,7 +6,7 @@ from app.models.common import PyObjectId
 DisciplineType = Literal[
     'Boxing', 'Wrestling', 'BJJ', 'Muay Thai', 
     'Strength & Conditioning', 'Cardio', 'Mobility', 
-    'Sprints', 'Squats', 'Bench Press'
+    'Sprints'
 ]
 
 class WorkoutBase(BaseModel):
