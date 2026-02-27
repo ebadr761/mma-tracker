@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { TrendingUp, User, AlertCircle, Wifi, WifiOff } from 'lucide-react';
+import { TrendingUp, User, AlertCircle, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { workoutsAPI, mlAPI } from '../services/api';
-import { socketService } from '../services/socket';
 import { Workout, MLInsights } from '../types';
 import { DISCIPLINES, DISCIPLINE_COLORS } from '../constants';
 
@@ -26,7 +25,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
-  const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
+
   const [insights, setInsights] = useState<MLInsights | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
@@ -43,41 +42,7 @@ export default function Dashboard() {
     fetchWorkouts();
   }, []);
 
-  // Set up Socket.IO real-time updates
-  useEffect(() => {
-    setIsSocketConnected(socketService.isConnected());
 
-    const handleWorkoutCreated = (workout: Workout) => {
-      console.log('🔔 Real-time: Workout created', workout);
-      setWorkouts(prev => [workout, ...prev]);
-      setSuccessMessage('New workout added (real-time)');
-      setTimeout(() => setSuccessMessage(''), 3000);
-    };
-
-    const handleWorkoutUpdated = (workout: Workout) => {
-      console.log('🔔 Real-time: Workout updated', workout);
-      setWorkouts(prev => prev.map(w => w.id === workout.id ? workout : w));
-      setSuccessMessage('Workout updated (real-time)');
-      setTimeout(() => setSuccessMessage(''), 3000);
-    };
-
-    const handleWorkoutDeleted = (data: { id: string }) => {
-      console.log('🔔 Real-time: Workout deleted', data.id);
-      setWorkouts(prev => prev.filter(w => w.id !== data.id));
-      setSuccessMessage('Workout deleted (real-time)');
-      setTimeout(() => setSuccessMessage(''), 3000);
-    };
-
-    socketService.onWorkoutCreated(handleWorkoutCreated);
-    socketService.onWorkoutUpdated(handleWorkoutUpdated);
-    socketService.onWorkoutDeleted(handleWorkoutDeleted);
-
-    return () => {
-      socketService.offWorkoutCreated(handleWorkoutCreated);
-      socketService.offWorkoutUpdated(handleWorkoutUpdated);
-      socketService.offWorkoutDeleted(handleWorkoutDeleted);
-    };
-  }, []);
 
   const fetchWorkouts = async (): Promise<void> => {
     try {
@@ -124,11 +89,7 @@ export default function Dashboard() {
         date: new Date().toISOString().split('T')[0]
       });
 
-      // Only add to local state if not using real-time updates
-      // Real-time will handle it via socket
-      if (!socketService.isConnected()) {
-        setWorkouts([data.workout, ...workouts]);
-      }
+      setWorkouts([data.workout, ...workouts]);
 
       setFormData({ discipline: 'Boxing', duration: '', intensity: 7, notes: '' });
       setSuccessMessage('Workout logged successfully!');
@@ -143,10 +104,7 @@ export default function Dashboard() {
     try {
       await workoutsAPI.delete(id);
 
-      // Only remove from local state if not using real-time updates
-      if (!socketService.isConnected()) {
-        setWorkouts(workouts.filter(w => w.id !== id));
-      }
+      setWorkouts(workouts.filter(w => w.id !== id));
 
       setSuccessMessage('Workout deleted successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
@@ -202,18 +160,7 @@ export default function Dashboard() {
         {/* Header */}
         <div className="mb-8 flex justify-between items-start">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-4xl font-bold">MMA Athletic Disciplines Manager</h1>
-              {isSocketConnected ? (
-                <span className="flex items-center gap-1 text-xs text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
-                  <Wifi className="w-3 h-3" /> Real-time
-                </span>
-              ) : (
-                <span className="flex items-center gap-1 text-xs text-slate-400 bg-slate-400/10 px-2 py-1 rounded-full">
-                  <WifiOff className="w-3 h-3" /> Offline
-                </span>
-              )}
-            </div>
+            <h1 className="text-4xl font-bold">MMA Athletic Disciplines Manager</h1>
             <p className="text-slate-400">Welcome back, {user?.username}! Track your training and dominate your goals</p>
           </div>
           <button
@@ -323,5 +270,3 @@ export default function Dashboard() {
   );
 }
 
-// Missing import fix
-import { LogOut } from 'lucide-react';

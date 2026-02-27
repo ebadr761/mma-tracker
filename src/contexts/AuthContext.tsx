@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { authAPI } from '../services/api';
-import { socketService } from '../services/socket';
+
 import { User } from '../types';
 
 interface AuthContextType {
@@ -29,18 +29,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuth();
   }, []);
 
-  // Connect to Socket.IO when user logs in
-  useEffect(() => {
-    if (user?.id) {
-      socketService.connect(user.id);
-    } else {
-      socketService.disconnect();
-    }
 
-    return () => {
-      socketService.disconnect();
-    };
-  }, [user]);
 
   const checkAuth = async (): Promise<void> => {
     try {
@@ -82,7 +71,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async (): Promise<void> => {
     try {
       await authAPI.logout();
-      socketService.disconnect();
       setUser(null);
       setError(null);
     } catch (err) {
