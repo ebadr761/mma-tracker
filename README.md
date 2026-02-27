@@ -169,10 +169,10 @@ mma-tracker/
 └── ...
 ```
 
-## � Contributors
+## Contributors
 
 - **Ebad ur Rehman** - Software Engineering Student @ UCalgary
 
-## � License
+## License
 
 MIT License. Open source for all martial artists.
