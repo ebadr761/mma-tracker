@@ -75,13 +75,6 @@ async def update_workout(
     workout_in: WorkoutCreate,
     current_user: UserInDB = Depends(get_current_user)
 ):
-    # Note: Using partial update might be better but WorkoutCreate requires all fields.
-    # Frontend sends all fields usually, or partial.
-    # If frontend sends partial, we need a WorkoutUpdate model with optional fields.
-    # Assuming full update or frontend sends complete object based on WorkoutCreate usage.
-    # Let's check `backend-ts` update logic: it handles partial updates.
-    # We should probably support partial updates here too.
-    
     update_data = workout_in.model_dump(exclude_unset=True)
     update_data["updatedAt"] = datetime.utcnow()
     
@@ -123,7 +116,6 @@ async def get_workout(
     )
     
     if not workout:
-        # Check backend-ts: returns { error: 'Workout not found' } with 404
         raise HTTPException(status_code=404, detail="Workout not found")
         
     return {"workout": WorkoutResponse(**workout).model_dump(by_alias=True)}

@@ -1,11 +1,15 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import BaseModel
 from app.database import db
 from app.models.user import UserCreate, UserResponse, UserInDB
 from app.auth.security import get_password_hash, verify_password, create_access_token
 from app.routes.deps import get_current_user
 from datetime import timedelta
 from app.config import settings
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
 
 router = APIRouter()
 
@@ -48,22 +52,6 @@ async def register(user_in: UserCreate):
     }
 
 @router.post("/login")
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    # Note: OAuth2PasswordRequestForm expects username field, but we might accept email as username
-    # The README says: { email: "...", password: "..." } for login
-    # So we might need a custom Body or handle OAuth2 form flexibility.
-    # But for simplicity with frontend integration (which likely sends JSON), we should probably accept JSON body.
-    # Let's override to accept JSON matching the existing frontend.
-    pass
-
-# Redefining login to match existing API JSON Structure
-from pydantic import BaseModel
-
-class LoginRequest(BaseModel):
-    email: str
-    password: str
-
-@router.post("/login") # Mapped to /login
 async def login(login_data: LoginRequest):
     user = await db.get_db().users.find_one({"email": login_data.email})
     if not user or not verify_password(login_data.password, user["passwordHash"]):
@@ -77,17 +65,6 @@ async def login(login_data: LoginRequest):
     access_token = create_access_token(
         data={"sub": str(user["_id"])}, expires_delta=access_token_expires
     )
-    
-    # Existing frontend expects: { message: "...", user: {...} }
-    # It might handle the token via cookie (HttpOnly) or body. 
-    # README says "Session-based authentication with HTTP-only cookies".
-    # Since we are moving to Token/JWT for "Modern" / "Mobile Ready", we should see how frontend expects it.
-    # If the frontend expects a session cookie `connect.sid`, we might have a mismatch.
-    # However, user approved "Backend Migration ... to Python".
-    # We should probably return the token in the body for now, and I might need to update frontend to store it.
-    # OR, we can set an HttpOnly cookie with the JWT.
-    
-    # For now, let's return it in body AND set cookie to be safe/flexible.
     
     user_model = UserResponse(**user)
     

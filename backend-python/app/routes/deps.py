@@ -5,7 +5,6 @@ from jose import jwt, JWTError
 from app.config import settings
 from app.database import db
 from app.models.user import UserInDB
-from app.auth.security import create_access_token
 from bson import ObjectId
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
