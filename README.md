@@ -10,9 +10,6 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 
 ---
-
-## 🎯 Overview
-
 FightMetrics is an intelligent training companion for martial artists (and athletes in general!). Unlike standard loggers, it uses Machine Learning (Scikit-Learn) to analyze your training patterns, identifying overlooked disciplines (Cluster Analysis) and predicting burnout risk (ACWR Regression). 
 
 Use it like a simple workout tracker. You log workouts, add notes for each workout and choose a type of workout based on several disciplines (weightlifting, running, Muay Thai, BJJ, wrestling, etc.)
@@ -21,16 +18,15 @@ Use it like a simple workout tracker. You log workouts, add notes for each worko
 <img width="1530" height="931" alt="fightmetrics dashboard" src="https://github.com/user-attachments/assets/b811744e-ccb7-42fe-a206-3d9efb7d25d6" />
 
 
-**Key Highlights:**
-- 🧠 **AI-Powered Insights**: Get automatic recommendations on where to focus your training.
-- � **Burnout Prediction**: Algorithmically monitors Acute vs. Chronic workload to lower injury risk.
-- ⚡ **Modern Stack**: Built with Python 3.12, FastAPI, and React 18.
-- 📊 **Interactive Analytics**: Visualise progress across 10+ combat disciplines (Boxing, BJJ, Muay Thai, etc.).
-- 🚀 **High Performance**: Asynchronous Python backend using Motor driver.
+**some details:**
+- **AI-Powered Insights**: Get automatic recommendations on where to focus your training.
+- **Burnout Prediction**: Algorithmically monitors Acute vs. Chronic workload to lower injury risk.
+- **Modern Stack**: Built with Python 3.12, FastAPI, and React 18.
+- **Interactive Analytics**: Visualise progress across 10+ combat disciplines (Boxing, BJJ, Muay Thai, etc.).
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Backend (Python/ML)
 | Technology | Purpose |
@@ -57,7 +53,7 @@ Use it like a simple workout tracker. You log workouts, add notes for each worko
 
 ## 🧠 Machine Learning Features
 
-The application uses specific ML techniques to improve athlete performance:
+The application uses specific ML techniques to improve athlete performance, serving as a mini-project to help me gain understandings on the KNN supervised learning classifier:
 
 ### 1. Weakness Identification (Clustering)
 - **Algorithm**: K-Means Clustering & Statistical Distribution
@@ -75,7 +71,8 @@ We calculate Load as `Duration (min) × Intensity (1-10)`.
 2.  **Chronic Load**: Average daily load over the last 28 days.
 3.  **ACWR**: `Acute Load / Chronic Load`
 
-> **The "Sweet Spot"**: Sports science suggests an ACWR between **0.8 and 1.3** is optimal for progress. A ratio **> 1.5** (the "Danger Zone") significantly increases injury risk because you are doing 50% more work than your body is conditioned for.
+> **The "Sweet Spot"**: Sports science suggests an ACWR between **0.8 and 1.3** is optimal for progress. A ratio **> 1.5** (the "Danger Zone") significantly increases injury risk because you are doing 50% more work than your body is conditioned for. The idea and research for this is based off the use of the acute-chronic workload ratio used by NFL coaches to used to monitor player training loads, prevent injuries, and optimize performance.
+NOTE: this doesn't mean this data is 100% proven to prevent injury, but it is a great insight to have if injury prevention is something you care about!
 
 
 ### 3. Focus Recommender
