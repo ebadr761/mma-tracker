@@ -4,7 +4,7 @@ from app.database import db
 from app.models.workout import WorkoutCreate, WorkoutResponse, WorkoutInDB
 from app.models.user import UserInDB
 from app.routes.deps import get_current_user
-from datetime import datetime
+from datetime import datetime, timezone
 from bson import ObjectId
 
 router = APIRouter()
@@ -31,8 +31,9 @@ async def create_workout(
 ):
     workout_dict = workout_in.model_dump()
     workout_dict["userId"] = current_user.id
-    workout_dict["createdAt"] = datetime.utcnow()
-    workout_dict["updatedAt"] = datetime.utcnow()
+    now = datetime.now(timezone.utc)
+    workout_dict["createdAt"] = now
+    workout_dict["updatedAt"] = now
     
     result = await db.get_db().workouts.insert_one(workout_dict)
     
@@ -76,7 +77,7 @@ async def update_workout(
     current_user: UserInDB = Depends(get_current_user)
 ):
     update_data = workout_in.model_dump(exclude_unset=True)
-    update_data["updatedAt"] = datetime.utcnow()
+    update_data["updatedAt"] = datetime.now(timezone.utc)
     
     result = await db.get_db().workouts.find_one_and_update(
         {"_id": ObjectId(id), "userId": current_user.id},

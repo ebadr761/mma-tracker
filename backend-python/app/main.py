@@ -1,5 +1,8 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 from app.config import settings
 from app.database import db
@@ -44,9 +47,6 @@ async def health_check():
     return {"status": "healthy", "backend": "python-fastapi"}
 
 # Serve Frontend in Production
-import os
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 
 # Mount static files if directory exists (for Docker build)
 static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")

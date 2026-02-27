@@ -13,12 +13,7 @@ async def get_insights(current_user: UserInDB = Depends(get_current_user)):
     workouts = await cursor.to_list(length=1000) # Analyze last 1000 sessions
     
     # Clean data for engine
-    workout_data = []
-    for w in workouts:
-        w_dict = dict(w)
-        w_dict["_id"] = str(w_dict["_id"])
-        w_dict["userId"] = str(w_dict["userId"])
-        workout_data.append(w_dict)
+    workout_data = [{**w, "_id": str(w["_id"]), "userId": str(w["userId"])} for w in workouts]
     
     engine = MLEngine(workout_data)
     
