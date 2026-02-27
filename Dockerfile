@@ -24,7 +24,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy Backend Code
 COPY backend-python/app ./app
-COPY backend-python/.env.example ./.env
 
 # Copy Frontend Build to Static Directory
 COPY --from=frontend-build /app/frontend/dist ./static
