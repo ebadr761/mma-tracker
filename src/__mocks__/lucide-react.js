@@ -1,8 +1,4 @@
-export const Clock = () => null;
-export const Calendar = () => null;
-export const Zap = () => null;
-export const TrendingUp = () => null;
-export const Activity = () => null;
-export const Users = () => null;
-export const Trophy = () => null;
-// Add other icons as needed or use a Proxy for catch-all
+// Proxy catch-all: any icon imported from lucide-react returns a no-op component
+module.exports = new Proxy({}, {
+    get: () => () => null
+});
