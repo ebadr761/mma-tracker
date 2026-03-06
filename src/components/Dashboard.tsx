@@ -95,7 +95,7 @@ export default function Dashboard() {
       setSuccessMessage('Workout logged successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to add workout');
+      setError(err.response?.data?.detail || 'Failed to add workout');
       console.error('Add workout error:', err);
     }
   };
@@ -109,7 +109,7 @@ export default function Dashboard() {
       setSuccessMessage('Workout deleted successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to delete workout');
+      setError(err.response?.data?.detail || 'Failed to delete workout');
       console.error('Delete workout error:', err);
     }
   };

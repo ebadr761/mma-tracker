@@ -48,7 +48,7 @@ async def register(user_in: UserCreate):
         "message": "User registered successfully",
         "access_token": access_token,
         "token_type": "bearer",
-        "user": user_model.model_dump(by_alias=True)
+        "user": user_model.model_dump()
     }
 
 @router.post("/login")
@@ -72,9 +72,9 @@ async def login(login_data: LoginRequest):
         "message": "Login successful",
         "access_token": access_token, 
         "token_type": "bearer",
-        "user": user_model.model_dump(by_alias=True)
+        "user": user_model.model_dump()
     }
 
 @router.get("/me", response_model=dict)
 async def read_users_me(current_user: UserInDB = Depends(get_current_user)):
-    return {"user": UserResponse(**current_user.model_dump()).model_dump(by_alias=True)}
+    return {"user": UserResponse(**current_user.model_dump()).model_dump()}

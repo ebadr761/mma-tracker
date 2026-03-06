@@ -81,7 +81,7 @@ export const workoutsAPI = {
   },
 
   getById: async (id: string): Promise<WorkoutResponse> => {
-    const response = await api.get<WorkoutResponse>(`/workouts/${id}/`);
+    const response = await api.get<WorkoutResponse>(`/workouts/${id}`);
     return response.data;
   },
 
@@ -91,12 +91,12 @@ export const workoutsAPI = {
   },
 
   update: async (id: string, workoutData: Partial<WorkoutInput>): Promise<WorkoutResponse> => {
-    const response = await api.put<WorkoutResponse>(`/workouts/${id}/`, workoutData);
+    const response = await api.put<WorkoutResponse>(`/workouts/${id}`, workoutData);
     return response.data;
   },
 
   delete: async (id: string): Promise<{ message: string }> => {
-    const response = await api.delete<{ message: string }>(`/workouts/${id}/`);
+    const response = await api.delete<{ message: string }>(`/workouts/${id}`);
     return response.data;
   },
 

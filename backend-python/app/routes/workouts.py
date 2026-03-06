@@ -21,7 +21,7 @@ async def get_workouts(
     workouts = await cursor.to_list(length=limit)
     
     return {
-        "workouts": [WorkoutResponse(**w).model_dump(by_alias=True) for w in workouts]
+        "workouts": [WorkoutResponse(**w).model_dump() for w in workouts]
     }
 
 @router.post("/", response_model=dict, status_code=status.HTTP_201_CREATED)
@@ -41,7 +41,7 @@ async def create_workout(
     
     return {
         "message": "Workout created successfully",
-        "workout": WorkoutResponse(**created_workout).model_dump(by_alias=True)
+        "workout": WorkoutResponse(**created_workout).model_dump()
     }
 
 @router.get("/stats/summary")
@@ -90,7 +90,7 @@ async def update_workout(
         
     return {
         "message": "Workout updated successfully",
-        "workout": WorkoutResponse(**result).model_dump(by_alias=True)
+        "workout": WorkoutResponse(**result).model_dump()
     }
 
 @router.delete("/{id}", response_model=dict)
@@ -119,4 +119,4 @@ async def get_workout(
     if not workout:
         raise HTTPException(status_code=404, detail="Workout not found")
         
-    return {"workout": WorkoutResponse(**workout).model_dump(by_alias=True)}
+    return {"workout": WorkoutResponse(**workout).model_dump()}
