@@ -99,7 +99,7 @@ export default function Dashboard() {
         duration: parseInt(formData.duration),
         intensity: formData.intensity,
         notes: formData.notes,
-        date: new Date().toISOString().split('T')[0]
+        date: `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`
       });
 
       setWorkouts([data.workout, ...workouts]);
@@ -138,8 +138,8 @@ export default function Dashboard() {
     return labels.map((label, i) => {
       const d = new Date(monday);
       d.setDate(monday.getDate() + i);
-      const dateStr = d.toISOString().split('T')[0];
-      const todayStr = today.toISOString().split('T')[0];
+      const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
       return {
         label,
         trained: workouts.some(w => w.date === dateStr),
@@ -164,7 +164,7 @@ export default function Dashboard() {
   const last7Days = Array.from({ length: 7 }, (_, i) => {
     const date = new Date();
     date.setDate(date.getDate() - (6 - i));
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     const dayWorkouts = workouts.filter(w => w.date === dateStr);
     return {
       date: date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),

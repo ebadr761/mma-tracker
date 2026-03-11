@@ -5,19 +5,22 @@ import { DISCIPLINE_COLORS } from '../../constants';
 
 function formatDate(dateStr: string): string {
     const today = new Date();
-    const date = new Date(dateStr + 'T00:00:00');
-    const todayStr = today.toISOString().split('T')[0];
+    const todayStr = toDateStr(today);
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    const yesterdayStr = toDateStr(yesterday);
 
     if (dateStr === todayStr) return 'Today';
     if (dateStr === yesterdayStr) return 'Yesterday';
+    const date = new Date(dateStr + 'T00:00:00');
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
 function toDateStr(d: Date): string {
-    return d.toISOString().split('T')[0];
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
 }
 
 interface WorkoutHistoryProps {
@@ -26,7 +29,6 @@ interface WorkoutHistoryProps {
     onLogClick: () => void;
 }
 
-// Build heatmap spanning from the earliest workout to today (min 4 weeks)
 // Build heatmap for exactly numWeeks going back from today
 function buildHeatmap(workouts: Workout[], numWeeks: number) {
     const minutesByDate = new Map<string, number>();
@@ -35,6 +37,7 @@ function buildHeatmap(workouts: Workout[], numWeeks: number) {
     }
 
     const today = new Date();
+    const todayStr = toDateStr(today);
     const dayOfWeek = (today.getDay() + 6) % 7; // 0=Mon
 
     // Start from Monday of (numWeeks - 1) weeks ago
@@ -45,7 +48,8 @@ function buildHeatmap(workouts: Workout[], numWeeks: number) {
     let currentWeek: { date: Date; dateStr: string; minutes: number }[] = [];
     const cursor = new Date(startDate);
 
-    while (cursor <= today) {
+    // Compare by date string to avoid DST time-shift issues
+    while (toDateStr(cursor) <= todayStr) {
         const ds = toDateStr(cursor);
         currentWeek.push({ date: new Date(cursor), dateStr: ds, minutes: minutesByDate.get(ds) || 0 });
         if (currentWeek.length === 7) {
