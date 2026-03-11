@@ -61,14 +61,14 @@ export default function Register({ onToggleForm }: RegisterProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-end p-6 pr-12 relative overflow-hidden">
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/islam-makhachev.JPG')", backgroundPosition: "center 100%" }}
+        style={{ backgroundImage: "url('/tuff.JPG')" }}
       />
-      {/* Dark overlay so the form is readable */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      {/* Subtle gradient overlay — darker on right where the form sits */}
+      <div className="absolute inset-0 bg-linear-to-r from-black/20 to-black/70" />
 
       <div className="w-full max-w-md relative z-10">
         <div className="bg-card/80 backdrop-blur-xl border border-edge rounded-2xl p-8 shadow-2xl">
