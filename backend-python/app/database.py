@@ -6,11 +6,11 @@ class Database:
     client: AsyncIOMotorClient = None
 
     def connect(self):
-        self.client = AsyncIOMotorClient(
-            settings.mongodb_uri,
-            tls=True,
-            tlsAllowInvalidCertificates=True,
-        )
+        uri = settings.mongodb_uri
+        # Append TLS params directly to URI for maximum compatibility
+        sep = "&" if "?" in uri else "?"
+        uri += f"{sep}tls=true&tlsInsecure=true"
+        self.client = AsyncIOMotorClient(uri)
         print("Connected to MongoDB")
 
     def disconnect(self):
