@@ -250,13 +250,8 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* AI Insights Section */}
-        <div className="animate-fade-up delay-150">
-          <InsightsWidget insights={insights} />
-        </div>
-
         {/* Tabs */}
-        <div className="animate-fade-up delay-225">
+        <div className="animate-fade-up delay-150">
         <div className="flex gap-2 mb-6 bg-elevated p-1 rounded-lg w-fit">
           <button
             onClick={() => setActiveTab('log')}
@@ -321,6 +316,11 @@ export default function Dashboard() {
             )}
           </div>
         )}
+
+        {/* AI Insights Section */}
+        <div className="mt-6">
+          <InsightsWidget insights={insights} />
+        </div>
       </div>
 
       {/* Toast Notification */}

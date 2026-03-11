@@ -9,7 +9,7 @@ export default function InsightsWidget({ insights }: InsightsWidgetProps) {
     if (!insights) return null;
 
     return (
-        <div className="mb-8 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-lg p-6 backdrop-blur">
+        <div className="mb-8 bg-linear-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-lg p-6 backdrop-blur">
             <div className="flex items-center gap-2 mb-4">
                 <Brain className="w-6 h-6 text-indigo-400" />
                 <h2 className="text-2xl font-bold">AI Training Insights</h2>
