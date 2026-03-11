@@ -38,9 +38,17 @@ export default function Login({ onToggleForm }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-page flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
-        <div className="bg-card backdrop-blur border border-edge rounded-2xl p-8 shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/islam-makhachev.JPG')", backgroundPosition: "center 10%" }}
+      />
+      {/* Dark overlay so the form is readable */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+      <div className="w-full max-w-md relative z-10">
+        <div className="bg-card/80 backdrop-blur-xl border border-edge rounded-2xl p-8 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-subtle rounded-full mb-4">
