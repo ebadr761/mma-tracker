@@ -22,6 +22,8 @@ Use it like a simple workout tracker. You log workouts, add notes for each worko
 - **Interactive Analytics**: Visualise progress across 10+ combat disciplines (Boxing, BJJ, Muay Thai, etc.).
 
 ---
+<img width="1441" height="793" alt="Screenshot 2026-03-10 at 11 57 59 PM" src="https://github.com/user-attachments/assets/76ac1774-b1ee-4568-b7eb-d765034a5f57" />
+
 
 ## Tech Stack
 
