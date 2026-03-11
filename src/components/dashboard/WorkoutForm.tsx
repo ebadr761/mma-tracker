@@ -48,16 +48,24 @@ export default function WorkoutForm({
                     />
                 </div>
 
-                <div>
+                <div className="md:col-span-2">
                     <label className="block text-sm font-semibold text-slate-300 mb-2">Intensity: {formData.intensity}/10</label>
-                    <input
-                        type="range"
-                        min="1"
-                        max="10"
-                        value={formData.intensity}
-                        onChange={(e) => setFormData({ ...formData, intensity: parseInt(e.target.value) })}
-                        className="w-full"
-                    />
+                    <div className="flex gap-2">
+                        {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
+                            <button
+                                key={n}
+                                type="button"
+                                onClick={() => setFormData({ ...formData, intensity: n })}
+                                className={`flex-1 py-2 rounded-lg text-sm font-bold transition ${
+                                    formData.intensity === n
+                                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                                        : 'bg-slate-800 border border-slate-600 text-slate-400 hover:border-slate-500 hover:text-slate-300'
+                                }`}
+                            >
+                                {n}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="md:col-span-2">
