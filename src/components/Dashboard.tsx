@@ -160,8 +160,8 @@ export default function Dashboard() {
         {/* Header */}
         <div className="mb-8 flex justify-between items-start">
           <div>
-            <h1 className="text-4xl font-bold">MMA Athletic Disciplines Manager</h1>
-            <p className="text-slate-400">Welcome back, {user?.username}! Track your training and dominate your goals</p>
+            <h1 className="text-4xl font-bold">MMA Tracker</h1>
+            <p className="text-slate-400">Welcome back, {user?.username}</p>
           </div>
           <button
             onClick={handleLogout}
@@ -201,22 +201,22 @@ export default function Dashboard() {
         <InsightsWidget insights={insights} />
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-6 border-b border-slate-700">
+        <div className="flex gap-2 mb-6 bg-slate-800/50 p-1 rounded-lg w-fit">
           <button
             onClick={() => setActiveTab('log')}
-            className={`pb-3 px-4 font-semibold transition ${activeTab === 'log' ? 'border-b-2 border-blue-500 text-blue-400' : 'text-slate-400 hover:text-slate-300'}`}
+            className={`px-5 py-2 rounded-md font-semibold text-sm transition ${activeTab === 'log' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}`}
           >
             Log Workout
           </button>
           <button
             onClick={() => setActiveTab('history')}
-            className={`pb-3 px-4 font-semibold transition ${activeTab === 'history' ? 'border-b-2 border-blue-500 text-blue-400' : 'text-slate-400 hover:text-slate-300'}`}
+            className={`px-5 py-2 rounded-md font-semibold text-sm transition ${activeTab === 'history' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}`}
           >
             History
           </button>
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`pb-3 px-4 font-semibold transition ${activeTab === 'analytics' ? 'border-b-2 border-blue-500 text-blue-400' : 'text-slate-400 hover:text-slate-300'}`}
+            className={`px-5 py-2 rounded-md font-semibold text-sm transition ${activeTab === 'analytics' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}`}
           >
             Analytics
           </button>

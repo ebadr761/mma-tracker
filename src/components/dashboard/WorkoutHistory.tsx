@@ -2,6 +2,19 @@ import { Trash2, Calendar } from 'lucide-react';
 import { Workout } from '../../types';
 import { DISCIPLINE_COLORS } from '../../constants';
 
+function formatDate(dateStr: string): string {
+    const today = new Date();
+    const date = new Date(dateStr + 'T00:00:00');
+    const todayStr = today.toISOString().split('T')[0];
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+    if (dateStr === todayStr) return 'Today';
+    if (dateStr === yesterdayStr) return 'Yesterday';
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
 interface WorkoutHistoryProps {
     workouts: Workout[];
     onDelete: (id: string) => void;
@@ -36,7 +49,7 @@ export default function WorkoutHistory({ workouts, onDelete, onLogClick }: Worko
                                 style={{ backgroundColor: DISCIPLINE_COLORS[workout.discipline] || '#ccc' }}
                             />
                             <h3 className="font-bold text-lg">{workout.discipline}</h3>
-                            <span className="text-slate-400 text-sm">{workout.date}</span>
+                            <span className="text-slate-400 text-sm">{formatDate(workout.date)}</span>
                         </div>
                         <div className="flex gap-6 text-slate-300 mb-2">
                             <span>{workout.duration} min</span>
