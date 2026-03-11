@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+import os
 
 class Settings(BaseSettings):
     mongodb_uri: str = "mongodb://localhost:27017/mmatracker"
@@ -7,6 +8,6 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 30
 
     class Config:
-        env_file = ".env"
+        env_file = ".env" if os.path.exists(".env") else None
 
 settings = Settings()

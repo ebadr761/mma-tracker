@@ -42,7 +42,12 @@ app.include_router(ml.router, prefix="/api/ml", tags=["ML"])
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "healthy", "backend": "python-fastapi"}
+    try:
+        await db.get_db().command("ping")
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"error: {e}"
+    return {"status": "healthy", "backend": "python-fastapi", "database": db_status}
 
 # Serve Frontend in Production
 
