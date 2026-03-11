@@ -120,6 +120,27 @@ export default function Dashboard() {
     await logout();
   };
 
+  // Current week training days (Mon-Sun)
+  const weekDays = (() => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
+    const labels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+    return labels.map((label, i) => {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      const dateStr = d.toISOString().split('T')[0];
+      const todayStr = today.toISOString().split('T')[0];
+      return {
+        label,
+        trained: workouts.some(w => w.date === dateStr),
+        isToday: dateStr === todayStr,
+        isFuture: d > today && dateStr !== todayStr,
+      };
+    });
+  })();
+
   // Stats calculations
   const totalHours = Math.round((workouts.reduce((sum, w) => sum + w.duration, 0) / 60) * 10) / 10;
   const avgIntensity = workouts.length > 0 ? Math.round((workouts.reduce((sum, w) => sum + w.intensity, 0) / workouts.length) * 10) / 10 : 0;
@@ -160,10 +181,30 @@ export default function Dashboard() {
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
-        <div className="mb-8 flex justify-between items-start">
+        <div className="mb-6 flex justify-between items-center animate-fade-up">
           <div>
-            <h1 className="text-4xl font-bold">MMA Tracker</h1>
-            <p className="text-slate-400">Welcome back, {user?.username}</p>
+            <h1 className="text-3xl font-bold">MMA Tracker</h1>
+            <div className="flex items-center gap-3 mt-2">
+              <div className="flex items-center gap-1.5">
+                {weekDays.map((day, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1">
+                    <span className={`text-[10px] font-medium ${day.isToday ? 'text-blue-400' : 'text-slate-500'}`}>{day.label}</span>
+                    <div
+                      className={`w-3 h-3 rounded-full transition-all ${
+                        day.trained
+                          ? 'bg-emerald-500 shadow-sm shadow-emerald-500/50'
+                          : day.isToday
+                            ? 'border-2 border-blue-500 bg-transparent'
+                            : day.isFuture
+                              ? 'bg-slate-700/50'
+                              : 'bg-slate-600/50'
+                      }`}
+                    />
+                  </div>
+                ))}
+              </div>
+              <span className="text-xs text-slate-500">this week</span>
+            </div>
           </div>
           <button
             onClick={handleLogout}
@@ -184,17 +225,22 @@ export default function Dashboard() {
         )}
 
         {/* Stats Overview */}
-        <StatsOverview
-          totalHours={totalHours}
-          totalSessions={totalSessions}
-          avgIntensity={avgIntensity}
-          disciplineCount={disciplineData.length}
-        />
+        <div className="animate-fade-up delay-75">
+          <StatsOverview
+            totalHours={totalHours}
+            totalSessions={totalSessions}
+            avgIntensity={avgIntensity}
+            disciplineCount={disciplineData.length}
+          />
+        </div>
 
         {/* AI Insights Section */}
-        <InsightsWidget insights={insights} />
+        <div className="animate-fade-up delay-150">
+          <InsightsWidget insights={insights} />
+        </div>
 
         {/* Tabs */}
+        <div className="animate-fade-up delay-225">
         <div className="flex gap-2 mb-6 bg-slate-800/50 p-1 rounded-lg w-fit">
           <button
             onClick={() => setActiveTab('log')}
@@ -214,6 +260,7 @@ export default function Dashboard() {
           >
             Analytics
           </button>
+        </div>
         </div>
 
         {/* Log Workout Tab */}

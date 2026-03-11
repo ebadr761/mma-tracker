@@ -1,4 +1,5 @@
 import { Plus } from 'lucide-react';
+import { DISCIPLINE_COLORS } from '../../constants';
 
 interface FormData {
     discipline: string;
@@ -24,17 +25,38 @@ export default function WorkoutForm({
         <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-8 backdrop-blur">
             <h2 className="text-2xl font-bold mb-6">Log New Workout</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label className="block text-sm font-semibold text-slate-300 mb-2">Discipline</label>
-                    <select
-                        value={formData.discipline}
-                        onChange={(e) => setFormData({ ...formData, discipline: e.target.value })}
-                        className="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-3 text-white focus:border-blue-500 focus:outline-none"
-                    >
-                        {disciplines.map(d => (
-                            <option key={d} value={d}>{d}</option>
-                        ))}
-                    </select>
+                <div className="md:col-span-2">
+                    <label className="block text-sm font-semibold text-slate-300 mb-3">Discipline</label>
+                    <div className="flex flex-wrap gap-2">
+                        {disciplines.map(d => {
+                            const color = DISCIPLINE_COLORS[d] || '#94a3b8';
+                            const isSelected = formData.discipline === d;
+                            return (
+                                <button
+                                    key={d}
+                                    type="button"
+                                    onClick={() => setFormData({ ...formData, discipline: d })}
+                                    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                                        isSelected
+                                            ? 'text-white shadow-lg scale-105'
+                                            : 'bg-slate-800/80 text-slate-400 border border-slate-600 hover:border-slate-500 hover:text-slate-300'
+                                    }`}
+                                    style={isSelected ? {
+                                        backgroundColor: color,
+                                        boxShadow: `0 4px 14px ${color}40`,
+                                    } : undefined}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <span
+                                            className="w-2 h-2 rounded-full"
+                                            style={{ backgroundColor: color }}
+                                        />
+                                        {d}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
 
                 <div>
