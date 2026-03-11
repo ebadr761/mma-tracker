@@ -1,5 +1,72 @@
 @import "tailwindcss";
 
+/* ── Light mode (default) ── */
+:root {
+  --color-page: #f4f4f5;
+  --color-card: rgba(255, 255, 255, 0.85);
+  --color-elevated: #f4f4f5;
+  --color-input: #e4e4e7;
+  --color-edge: #d4d4d8;
+  --color-edge-subtle: #e4e4e7;
+  --color-ink: #18181b;
+  --color-ink-secondary: #3f3f46;
+  --color-ink-muted: #71717a;
+  --color-ink-faint: #a1a1aa;
+  --color-accent: #4f46e5;
+  --color-accent-hover: #4338ca;
+  --color-accent-subtle: rgba(79, 70, 229, 0.1);
+  --color-accent-text: #4f46e5;
+  --chart-grid: #d4d4d8;
+  --chart-axis: #71717a;
+  --chart-tooltip-bg: #ffffff;
+  --chart-bar: #6366f1;
+}
+
+/* ── Dark mode ── */
+.dark {
+  --color-page: #0c0c0f;
+  --color-card: rgba(39, 39, 42, 0.4);
+  --color-elevated: rgba(39, 39, 42, 0.8);
+  --color-input: #27272a;
+  --color-edge: #3f3f46;
+  --color-edge-subtle: #27272a;
+  --color-ink: #ffffff;
+  --color-ink-secondary: #a1a1aa;
+  --color-ink-muted: #71717a;
+  --color-ink-faint: #52525b;
+  --color-accent: #6366f1;
+  --color-accent-hover: #4f46e5;
+  --color-accent-subtle: rgba(99, 102, 241, 0.15);
+  --color-accent-text: #818cf8;
+  --chart-grid: #3f3f46;
+  --chart-axis: #71717a;
+  --chart-tooltip-bg: #18181b;
+  --chart-bar: #6366f1;
+}
+
+@theme {
+  --color-page: var(--color-page);
+  --color-card: var(--color-card);
+  --color-elevated: var(--color-elevated);
+  --color-input: var(--color-input);
+  --color-edge: var(--color-edge);
+  --color-edge-subtle: var(--color-edge-subtle);
+  --color-ink: var(--color-ink);
+  --color-ink-secondary: var(--color-ink-secondary);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-ink-faint: var(--color-ink-faint);
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-subtle: var(--color-accent-subtle);
+  --color-accent-text: var(--color-accent-text);
+}
+
+body {
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  transition: background-color 0.2s, color 0.2s;
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;

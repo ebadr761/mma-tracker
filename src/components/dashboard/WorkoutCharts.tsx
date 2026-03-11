@@ -21,27 +21,27 @@ interface WorkoutChartsProps {
 export default function WorkoutCharts({ disciplineData, last7Days }: WorkoutChartsProps) {
     return (
         <>
-            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur">
+            <div className="bg-card border border-edge rounded-lg p-6 backdrop-blur">
                 <h3 className="text-xl font-bold mb-4">Hours by Discipline</h3>
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={disciplineData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-                        <XAxis dataKey="name" stroke="#94a3b8" />
-                        <YAxis stroke="#94a3b8" />
-                        <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px' }} />
-                        <Bar dataKey="hours" fill="#3B82F6" radius={[8, 8, 0, 0]} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
+                        <XAxis dataKey="name" stroke="var(--chart-axis)" />
+                        <YAxis stroke="var(--chart-axis)" />
+                        <Tooltip contentStyle={{ backgroundColor: 'var(--chart-tooltip-bg)', border: '1px solid var(--color-edge)', borderRadius: '8px', color: 'var(--color-ink)' }} />
+                        <Bar dataKey="hours" fill="var(--chart-bar)" radius={[8, 8, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
 
-            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur">
+            <div className="bg-card border border-edge rounded-lg p-6 backdrop-blur">
                 <h3 className="text-xl font-bold mb-4">Last 7 Days Activity</h3>
                 <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={last7Days}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-                        <XAxis dataKey="date" stroke="#94a3b8" />
-                        <YAxis stroke="#94a3b8" />
-                        <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px' }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
+                        <XAxis dataKey="date" stroke="var(--chart-axis)" />
+                        <YAxis stroke="var(--chart-axis)" />
+                        <Tooltip contentStyle={{ backgroundColor: 'var(--chart-tooltip-bg)', border: '1px solid var(--color-edge)', borderRadius: '8px', color: 'var(--color-ink)' }} />
                         <Legend />
                         <Line type="monotone" dataKey="sessions" stroke="#10B981" strokeWidth={2} dot={{ fill: '#10B981' }} />
                         <Line type="monotone" dataKey="hours" stroke="#F59E0B" strokeWidth={2} dot={{ fill: '#F59E0B' }} />

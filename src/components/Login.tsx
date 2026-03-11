@@ -38,16 +38,16 @@ export default function Login({ onToggleForm }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-page flex items-center justify-center p-6">
       <div className="w-full max-w-md">
-        <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-card backdrop-blur border border-edge rounded-2xl p-8 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600/20 rounded-full mb-4">
-              <LogIn className="w-8 h-8 text-blue-400" />
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-subtle rounded-full mb-4">
+              <LogIn className="w-8 h-8 text-accent-text" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-slate-400">Log in to track your training</p>
+            <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
+            <p className="text-ink-muted">Log in to track your training</p>
           </div>
 
           {/* Error Message */}
@@ -61,11 +61,11 @@ export default function Login({ onToggleForm }: LoginProps) {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">
+              <label className="block text-sm font-semibold text-ink-secondary mb-2">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-muted" />
                 <input
                   type="email"
                   value={formData.email}
@@ -73,17 +73,17 @@ export default function Login({ onToggleForm }: LoginProps) {
                   placeholder="your@email.com"
                   required
                   autoComplete="email"
-                  className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition"
+                  className="w-full bg-input border border-edge rounded-lg pl-12 pr-4 py-3 text-ink placeholder-ink-faint focus:border-accent focus:outline-none transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">
+              <label className="block text-sm font-semibold text-ink-secondary mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-muted" />
                 <input
                   type="password"
                   value={formData.password}
@@ -91,7 +91,7 @@ export default function Login({ onToggleForm }: LoginProps) {
                   placeholder="Enter your password"
                   required
                   autoComplete="current-password"
-                  className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition"
+                  className="w-full bg-input border border-edge rounded-lg pl-12 pr-4 py-3 text-ink placeholder-ink-faint focus:border-accent focus:outline-none transition"
                 />
               </div>
             </div>
@@ -99,7 +99,7 @@ export default function Login({ onToggleForm }: LoginProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
+              className="w-full bg-accent hover:bg-accent-hover disabled:bg-ink-faint disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -117,11 +117,11 @@ export default function Login({ onToggleForm }: LoginProps) {
 
           {/* Toggle to Register */}
           <div className="mt-6 text-center">
-            <p className="text-slate-400">
+            <p className="text-ink-muted">
               Don't have an account?{' '}
               <button
                 onClick={onToggleForm}
-                className="text-blue-400 hover:text-blue-300 font-semibold transition"
+                className="text-accent-text hover:text-accent font-semibold transition"
               >
                 Sign up
               </button>

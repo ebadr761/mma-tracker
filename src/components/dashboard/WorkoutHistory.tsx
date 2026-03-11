@@ -24,13 +24,13 @@ interface WorkoutHistoryProps {
 export default function WorkoutHistory({ workouts, onDelete, onLogClick }: WorkoutHistoryProps) {
     if (workouts.length === 0) {
         return (
-            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-12 backdrop-blur text-center">
-                <Calendar className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+            <div className="bg-card border border-edge rounded-lg p-12 backdrop-blur text-center">
+                <Calendar className="w-16 h-16 text-ink-faint mx-auto mb-4" />
                 <h3 className="text-xl font-bold mb-2">No workouts yet</h3>
-                <p className="text-slate-400 mb-6">Start logging your training sessions to see them here</p>
+                <p className="text-ink-muted mb-6">Start logging your training sessions to see them here</p>
                 <button
                     onClick={onLogClick}
-                    className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold transition"
+                    className="bg-accent hover:bg-accent-hover px-6 py-2 rounded-lg font-semibold transition text-white"
                 >
                     Log Your First Workout
                 </button>
@@ -41,7 +41,7 @@ export default function WorkoutHistory({ workouts, onDelete, onLogClick }: Worko
     return (
         <div className="space-y-4">
             {workouts.map(workout => (
-                <div key={workout.id} className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur flex justify-between items-start hover:border-slate-500 transition">
+                <div key={workout.id} className="bg-card border border-edge rounded-lg p-6 backdrop-blur flex justify-between items-start hover:border-ink-faint transition">
                     <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                             <div
@@ -49,13 +49,13 @@ export default function WorkoutHistory({ workouts, onDelete, onLogClick }: Worko
                                 style={{ backgroundColor: DISCIPLINE_COLORS[workout.discipline] || '#ccc' }}
                             />
                             <h3 className="font-bold text-lg">{workout.discipline}</h3>
-                            <span className="text-slate-400 text-sm">{formatDate(workout.date)}</span>
+                            <span className="text-ink-muted text-sm">{formatDate(workout.date)}</span>
                         </div>
-                        <div className="flex gap-6 text-slate-300 mb-2">
+                        <div className="flex gap-6 text-ink-secondary mb-2">
                             <span>{workout.duration} min</span>
                             <span>Intensity: {workout.intensity}/10</span>
                         </div>
-                        {workout.notes && <p className="text-slate-400 text-sm">{workout.notes}</p>}
+                        {workout.notes && <p className="text-ink-muted text-sm">{workout.notes}</p>}
                     </div>
                     <button
                         onClick={() => onDelete(workout.id)}

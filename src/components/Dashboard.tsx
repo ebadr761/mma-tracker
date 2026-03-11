@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { TrendingUp, User, AlertCircle, LogOut, X } from 'lucide-react';
+import { TrendingUp, AlertCircle, LogOut, X, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { workoutsAPI, mlAPI } from '../services/api';
 import { Workout, MLInsights } from '../types';
@@ -41,6 +41,14 @@ export default function Dashboard() {
   });
 
   const [activeTab, setActiveTab] = useState<'log' | 'history' | 'analytics'>('log');
+  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'));
+
+  const toggleTheme = () => {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle('dark', next);
+    localStorage.setItem('theme', next ? 'dark' : 'light');
+  };
 
   // Fetch workouts on mount
   useEffect(() => {
@@ -167,17 +175,17 @@ export default function Dashboard() {
 
   if (loading && workouts.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-page text-ink flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-600/30 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-400">Loading your workouts...</p>
+          <div className="w-16 h-16 border-4 border-accent/30 border-t-accent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-ink-muted">Loading your workouts...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-6">
+    <div className="min-h-screen bg-page text-ink p-6">
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
@@ -188,37 +196,45 @@ export default function Dashboard() {
               <div className="flex items-center gap-1.5">
                 {weekDays.map((day, i) => (
                   <div key={i} className="flex flex-col items-center gap-1">
-                    <span className={`text-[10px] font-medium ${day.isToday ? 'text-blue-400' : 'text-slate-500'}`}>{day.label}</span>
+                    <span className={`text-[10px] font-medium ${day.isToday ? 'text-accent-text' : 'text-ink-faint'}`}>{day.label}</span>
                     <div
                       className={`w-3 h-3 rounded-full transition-all ${
                         day.trained
                           ? 'bg-emerald-500 shadow-sm shadow-emerald-500/50'
                           : day.isToday
-                            ? 'border-2 border-blue-500 bg-transparent'
+                            ? 'border-2 border-accent bg-transparent'
                             : day.isFuture
-                              ? 'bg-slate-700/50'
-                              : 'bg-slate-600/50'
+                              ? 'bg-edge-subtle'
+                              : 'bg-edge'
                       }`}
                     />
                   </div>
                 ))}
               </div>
-              <span className="text-xs text-slate-500">this week</span>
+              <span className="text-xs text-ink-faint">this week</span>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700/50 hover:bg-slate-700 border border-slate-600 rounded-lg transition"
-          >
-            <User className="w-4 h-4" />
-            <span className="font-semibold">{user?.username}</span>
-            <LogOut className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-card border border-edge hover:bg-elevated transition"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-ink-muted" />}
+            </button>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 bg-card hover:bg-elevated border border-edge rounded-lg transition"
+            >
+              <span className="font-semibold text-sm">{user?.username}</span>
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg flex items-center gap-3 text-red-400">
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg flex items-center gap-3 text-red-500">
             <AlertCircle className="w-5 h-5" />
             <p>{error}</p>
           </div>
@@ -241,22 +257,22 @@ export default function Dashboard() {
 
         {/* Tabs */}
         <div className="animate-fade-up delay-225">
-        <div className="flex gap-2 mb-6 bg-slate-800/50 p-1 rounded-lg w-fit">
+        <div className="flex gap-2 mb-6 bg-elevated p-1 rounded-lg w-fit">
           <button
             onClick={() => setActiveTab('log')}
-            className={`px-5 py-2 rounded-md font-semibold text-sm transition ${activeTab === 'log' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}`}
+            className={`px-5 py-2 rounded-md font-semibold text-sm transition ${activeTab === 'log' ? 'bg-accent text-white shadow-lg' : 'text-ink-muted hover:text-ink'}`}
           >
             Log Workout
           </button>
           <button
             onClick={() => setActiveTab('history')}
-            className={`px-5 py-2 rounded-md font-semibold text-sm transition ${activeTab === 'history' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}`}
+            className={`px-5 py-2 rounded-md font-semibold text-sm transition ${activeTab === 'history' ? 'bg-accent text-white shadow-lg' : 'text-ink-muted hover:text-ink'}`}
           >
             History
           </button>
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`px-5 py-2 rounded-md font-semibold text-sm transition ${activeTab === 'analytics' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}`}
+            className={`px-5 py-2 rounded-md font-semibold text-sm transition ${activeTab === 'analytics' ? 'bg-accent text-white shadow-lg' : 'text-ink-muted hover:text-ink'}`}
           >
             Analytics
           </button>
@@ -286,13 +302,13 @@ export default function Dashboard() {
         {activeTab === 'analytics' && (
           <div className="space-y-6">
             {workouts.length === 0 ? (
-              <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-12 backdrop-blur text-center">
-                <TrendingUp className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+              <div className="bg-card border border-edge rounded-lg p-12 backdrop-blur text-center">
+                <TrendingUp className="w-16 h-16 text-ink-faint mx-auto mb-4" />
                 <h3 className="text-xl font-bold mb-2">No analytics yet</h3>
-                <p className="text-slate-400 mb-6">Log some workouts to see your training insights</p>
+                <p className="text-ink-muted mb-6">Log some workouts to see your training insights</p>
                 <button
                   onClick={() => setActiveTab('log')}
-                  className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold transition"
+                  className="bg-accent hover:bg-accent-hover px-6 py-2 rounded-lg font-semibold transition text-white"
                 >
                   Start Training
                 </button>

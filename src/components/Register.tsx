@@ -61,16 +61,16 @@ export default function Register({ onToggleForm }: RegisterProps) {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-page flex items-center justify-center p-6">
       <div className="w-full max-w-md">
-        <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-card backdrop-blur border border-edge rounded-2xl p-8 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-600/20 rounded-full mb-4">
               <UserPlus className="w-8 h-8 text-emerald-400" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
-            <p className="text-slate-400">Start tracking your MMA journey</p>
+            <h1 className="text-3xl font-bold mb-2">Create Account</h1>
+            <p className="text-ink-muted">Start tracking your MMA journey</p>
           </div>
 
           {/* Error Message */}
@@ -84,11 +84,11 @@ export default function Register({ onToggleForm }: RegisterProps) {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">
+              <label className="block text-sm font-semibold text-ink-secondary mb-2">
                 Username
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-muted" />
                 <input
                   type="text"
                   value={formData.username}
@@ -96,34 +96,34 @@ export default function Register({ onToggleForm }: RegisterProps) {
                   placeholder="fighter123"
                   required
                   minLength={3}
-                  className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition"
+                  className="w-full bg-input border border-edge rounded-lg pl-12 pr-4 py-3 text-ink placeholder-ink-faint focus:border-emerald-500 focus:outline-none transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">
+              <label className="block text-sm font-semibold text-ink-secondary mb-2">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-muted" />
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   placeholder="your@email.com"
                   required
-                  className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition"
+                  className="w-full bg-input border border-edge rounded-lg pl-12 pr-4 py-3 text-ink placeholder-ink-faint focus:border-emerald-500 focus:outline-none transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">
+              <label className="block text-sm font-semibold text-ink-secondary mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-muted" />
                 <input
                   type="password"
                   value={formData.password}
@@ -131,24 +131,24 @@ export default function Register({ onToggleForm }: RegisterProps) {
                   placeholder="At least 6 characters"
                   required
                   minLength={6}
-                  className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition"
+                  className="w-full bg-input border border-edge rounded-lg pl-12 pr-4 py-3 text-ink placeholder-ink-faint focus:border-emerald-500 focus:outline-none transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">
+              <label className="block text-sm font-semibold text-ink-secondary mb-2">
                 Confirm Password
               </label>
               <div className="relative">
-                <CheckCircle className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <CheckCircle className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-muted" />
                 <input
                   type="password"
                   value={formData.confirmPassword}
                   onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                   placeholder="Confirm your password"
                   required
-                  className="w-full bg-slate-900/50 border border-slate-600 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition"
+                  className="w-full bg-input border border-edge rounded-lg pl-12 pr-4 py-3 text-ink placeholder-ink-faint focus:border-emerald-500 focus:outline-none transition"
                 />
               </div>
             </div>
@@ -156,7 +156,7 @@ export default function Register({ onToggleForm }: RegisterProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-ink-faint disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -174,7 +174,7 @@ export default function Register({ onToggleForm }: RegisterProps) {
 
           {/* Toggle to Login */}
           <div className="mt-6 text-center">
-            <p className="text-slate-400">
+            <p className="text-ink-muted">
               Already have an account?{' '}
               <button
                 onClick={onToggleForm}
