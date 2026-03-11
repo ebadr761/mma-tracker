@@ -1,0 +1,17 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc python3-dev ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app ./app
+
+ENV PORT=8000
+EXPOSE 8000
+
+ENTRYPOINT ["sh", "-c", "python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"]
