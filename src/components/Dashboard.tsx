@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { TrendingUp, User, AlertCircle, LogOut } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { TrendingUp, User, AlertCircle, LogOut, X } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { workoutsAPI, mlAPI } from '../services/api';
 import { Workout, MLInsights } from '../types';
@@ -24,7 +24,12 @@ export default function Dashboard() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = useCallback((message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  }, []);
 
   const [insights, setInsights] = useState<MLInsights | null>(null);
 
@@ -92,8 +97,7 @@ export default function Dashboard() {
       setWorkouts([data.workout, ...workouts]);
 
       setFormData({ discipline: 'Boxing', duration: '', intensity: 7, notes: '' });
-      setSuccessMessage('Workout logged successfully!');
-      setTimeout(() => setSuccessMessage(''), 3000);
+      showToast('Workout logged successfully!', 'success');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Failed to add workout');
       console.error('Add workout error:', err);
@@ -105,9 +109,7 @@ export default function Dashboard() {
       await workoutsAPI.delete(id);
 
       setWorkouts(workouts.filter(w => w.id !== id));
-
-      setSuccessMessage('Workout deleted successfully!');
-      setTimeout(() => setSuccessMessage(''), 3000);
+      showToast('Workout deleted successfully!', 'success');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Failed to delete workout');
       console.error('Delete workout error:', err);
@@ -172,14 +174,6 @@ export default function Dashboard() {
             <LogOut className="w-4 h-4" />
           </button>
         </div>
-
-        {/* Success Message */}
-        {successMessage && (
-          <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/50 rounded-lg flex items-center gap-3 text-emerald-400">
-            <TrendingUp className="w-5 h-5" />
-            <p>{successMessage}</p>
-          </div>
-        )}
 
         {/* Error Message */}
         {error && (
@@ -265,7 +259,22 @@ export default function Dashboard() {
           </div>
         )}
       </div>
-    </div >
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`fixed bottom-6 right-6 flex items-center gap-3 px-5 py-3 rounded-lg shadow-2xl transition-all animate-in ${
+          toast.type === 'success'
+            ? 'bg-emerald-600 text-white'
+            : 'bg-red-600 text-white'
+        }`}>
+          {toast.type === 'success' ? <TrendingUp className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+          <span className="text-sm font-medium">{toast.message}</span>
+          <button onClick={() => setToast(null)} className="ml-2 hover:opacity-70 transition">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 

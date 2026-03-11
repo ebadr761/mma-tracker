@@ -15,7 +15,7 @@ export default function StatsOverview({
 }: StatsOverviewProps) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur transform hover:scale-105 transition">
+            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur transition">
                 <div className="flex items-center justify-between">
                     <div>
                         <p className="text-slate-400 text-sm mb-1">Total Hours</p>
@@ -25,7 +25,7 @@ export default function StatsOverview({
                 </div>
             </div>
 
-            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur transform hover:scale-105 transition">
+            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur transition">
                 <div className="flex items-center justify-between">
                     <div>
                         <p className="text-slate-400 text-sm mb-1">Sessions</p>
@@ -35,7 +35,7 @@ export default function StatsOverview({
                 </div>
             </div>
 
-            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur transform hover:scale-105 transition">
+            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur transition">
                 <div className="flex items-center justify-between">
                     <div>
                         <p className="text-slate-400 text-sm mb-1">Avg Intensity</p>
@@ -45,7 +45,7 @@ export default function StatsOverview({
                 </div>
             </div>
 
-            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur transform hover:scale-105 transition">
+            <div className="bg-slate-700/40 border border-slate-600 rounded-lg p-6 backdrop-blur transition">
                 <div className="flex items-center justify-between">
                     <div>
                         <p className="text-slate-400 text-sm mb-1">Disciplines</p>
