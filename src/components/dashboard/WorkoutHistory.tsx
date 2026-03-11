@@ -182,7 +182,18 @@ export default function WorkoutHistory({ workouts, onDelete, onLogClick }: Worko
         <div className="space-y-5">
             {/* Contribution Heatmap */}
             <div ref={containerRef} className="bg-card border border-edge rounded-lg p-5">
-                <h3 className="text-sm font-semibold text-ink-muted mb-3">Training Activity</h3>
+                <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-ink-muted">Training Activity</h3>
+                    <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] text-ink-faint">Less</span>
+                        <div className="w-3 h-3 rounded-sm bg-edge-subtle" />
+                        <div className="w-3 h-3 rounded-sm bg-indigo-500/25" />
+                        <div className="w-3 h-3 rounded-sm bg-indigo-500/50" />
+                        <div className="w-3 h-3 rounded-sm bg-indigo-500/75" />
+                        <div className="w-3 h-3 rounded-sm bg-indigo-500" />
+                        <span className="text-[10px] text-ink-faint">More</span>
+                    </div>
+                </div>
                 <div>
                     {/* Grid: day labels column + one column per week, stretches to fill */}
                     <div
@@ -222,16 +233,6 @@ export default function WorkoutHistory({ workouts, onDelete, onLogClick }: Worko
                                 })}
                             </>
                         ))}
-                    </div>
-                    {/* Legend */}
-                    <div className="flex items-center gap-1.5 mt-2 justify-end">
-                        <span className="text-[10px] text-ink-faint">Less</span>
-                        <div className="w-3 h-3 rounded-sm bg-edge-subtle" />
-                        <div className="w-3 h-3 rounded-sm bg-indigo-500/25" />
-                        <div className="w-3 h-3 rounded-sm bg-indigo-500/50" />
-                        <div className="w-3 h-3 rounded-sm bg-indigo-500/75" />
-                        <div className="w-3 h-3 rounded-sm bg-indigo-500" />
-                        <span className="text-[10px] text-ink-faint">More</span>
                     </div>
                 </div>
             </div>
