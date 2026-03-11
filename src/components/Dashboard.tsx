@@ -3,7 +3,7 @@ import { TrendingUp, User, AlertCircle, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { workoutsAPI, mlAPI } from '../services/api';
 import { Workout, MLInsights } from '../types';
-import { DISCIPLINES, DISCIPLINE_COLORS } from '../constants';
+import { DISCIPLINES } from '../constants';
 
 // Sub-components
 import StatsOverview from './dashboard/StatsOverview';
@@ -260,7 +260,6 @@ export default function Dashboard() {
               <WorkoutCharts
                 disciplineData={disciplineData}
                 last7Days={last7Days}
-                colors={DISCIPLINE_COLORS}
               />
             )}
           </div>
