@@ -7,10 +7,11 @@ class Database:
     client: AsyncIOMotorClient = None
 
     def connect(self):
-        self.client = AsyncIOMotorClient(
-            settings.mongodb_uri,
-            tlsCAFile=certifi.where()
-        )
+        uri = settings.mongodb_uri
+        # Append TLS CA file via connection string for cloud compatibility
+        sep = "&" if "?" in uri else "?"
+        uri += f"{sep}tls=true&tlsCAFile={certifi.where()}"
+        self.client = AsyncIOMotorClient(uri)
         print("Connected to MongoDB")
 
     def disconnect(self):
