@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
+import { useMemo, useRef, useState, useEffect } from 'react';
 import { Trash2, Calendar, Flame, Trophy, Zap } from 'lucide-react';
 import { Workout } from '../../types';
 import { DISCIPLINE_COLORS } from '../../constants';
