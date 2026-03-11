@@ -14,7 +14,6 @@ FightMetrics is an intelligent training companion for martial artists (and athle
 
 Use it like a simple workout tracker. You log workouts, add notes for each workout and choose a type of workout based on several disciplines (weightlifting, running, Muay Thai, BJJ, wrestling, etc.)
 
-<img width="1263" height="787" alt="fightmetrics" src="https://github.com/user-attachments/assets/ea30ba0e-401d-4bb7-bf2e-c5076498067e" />
 <img width="1530" height="931" alt="fightmetrics dashboard" src="https://github.com/user-attachments/assets/b811744e-ccb7-42fe-a206-3d9efb7d25d6" />
 
 
