@@ -11,7 +11,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 
-COPY start.sh .
-RUN chmod +x start.sh
+EXPOSE 8000
 
-CMD ["./start.sh"]
+CMD ["python", "-c", "import os; port = os.environ.get('PORT', '8000'); import uvicorn; uvicorn.run('app.main:app', host='0.0.0.0', port=int(port))"]
