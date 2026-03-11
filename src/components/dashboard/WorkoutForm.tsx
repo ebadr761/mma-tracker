@@ -59,34 +59,35 @@ export default function WorkoutForm({
                     </div>
                 </div>
 
-                <div>
-                    <label className="block text-sm font-semibold text-ink-secondary mb-2">Duration (minutes)</label>
-                    <input
-                        type="number"
-                        value={formData.duration}
-                        onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                        placeholder="90"
-                        className="w-full bg-input border border-edge rounded-lg px-4 py-3 text-ink focus:border-accent focus:outline-none"
-                    />
-                </div>
-
-                <div className="md:col-span-2">
-                    <label className="block text-sm font-semibold text-ink-secondary mb-2">Intensity: {formData.intensity}/10</label>
-                    <div className="flex gap-2">
-                        {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
-                            <button
-                                key={n}
-                                type="button"
-                                onClick={() => setFormData({ ...formData, intensity: n })}
-                                className={`flex-1 py-2 rounded-lg text-sm font-bold transition ${
-                                    formData.intensity === n
-                                        ? 'bg-accent text-white shadow-lg shadow-accent/30'
-                                        : 'bg-input border border-edge text-ink-muted hover:border-ink-faint hover:text-ink-secondary'
-                                }`}
-                            >
-                                {n}
-                            </button>
-                        ))}
+                <div className="md:col-span-2 flex gap-4 items-end">
+                    <div className="flex-1">
+                        <label className="block text-sm font-semibold text-ink-secondary mb-2">Intensity: {formData.intensity}/10</label>
+                        <div className="flex gap-1.5">
+                            {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
+                                <button
+                                    key={n}
+                                    type="button"
+                                    onClick={() => setFormData({ ...formData, intensity: n })}
+                                    className={`flex-1 py-2 rounded-lg text-sm font-bold transition ${
+                                        formData.intensity === n
+                                            ? 'bg-accent text-white shadow-lg shadow-accent/30'
+                                            : 'bg-input border border-edge text-ink-muted hover:border-ink-faint hover:text-ink-secondary'
+                                    }`}
+                                >
+                                    {n}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="w-32">
+                        <label className="block text-sm font-semibold text-ink-secondary mb-2">Duration (min)</label>
+                        <input
+                            type="number"
+                            value={formData.duration}
+                            onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                            placeholder="90"
+                            className="w-full bg-input border border-edge rounded-lg px-4 py-2.5 text-ink focus:border-accent focus:outline-none"
+                        />
                     </div>
                 </div>
 

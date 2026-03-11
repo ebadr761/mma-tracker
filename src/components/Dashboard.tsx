@@ -190,15 +190,15 @@ export default function Dashboard() {
 
         {/* Header */}
         <div className="mb-6 flex justify-between items-center animate-fade-up">
-          <div>
+          <div className="flex items-center gap-5">
             <h1 className="text-3xl font-bold">MMA Tracker</h1>
-            <div className="flex items-center gap-3 mt-2">
+            <div className="flex items-center gap-2">
               <div className="flex items-center gap-1.5">
                 {weekDays.map((day, i) => (
-                  <div key={i} className="flex flex-col items-center gap-1">
+                  <div key={i} className="flex flex-col items-center gap-0.5">
                     <span className={`text-[10px] font-medium ${day.isToday ? 'text-accent-text' : 'text-ink-faint'}`}>{day.label}</span>
                     <div
-                      className={`w-3 h-3 rounded-full transition-all ${
+                      className={`w-2.5 h-2.5 rounded-full transition-all ${
                         day.trained
                           ? 'bg-emerald-500 shadow-sm shadow-emerald-500/50'
                           : day.isToday
@@ -211,7 +211,7 @@ export default function Dashboard() {
                   </div>
                 ))}
               </div>
-              <span className="text-xs text-ink-faint">this week</span>
+              <span className="text-[10px] text-ink-faint">this week</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
