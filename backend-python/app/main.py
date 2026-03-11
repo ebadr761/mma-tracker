@@ -24,10 +24,8 @@ app = FastAPI(
 )
 
 # CORS config
-origins = [
-    "http://localhost:5173", # Vite dev server
-    "http://localhost:3000",
-]
+allowed = os.environ.get("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000")
+origins = [o.strip() for o in allowed.split(",")]
 
 app.add_middleware(
     CORSMiddleware,

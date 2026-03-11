@@ -11,7 +11,7 @@ import {
 
 // Create axios instance with base configuration
 const api: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:8000/api', // Python FastAPI default port
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
   headers: {
     'Content-Type': 'application/json',
   },
