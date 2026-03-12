@@ -24,6 +24,8 @@ Use it like a simple workout tracker. You log workouts, add notes for each worko
 ---
 <img width="1445" height="792" alt="Screenshot 2026-03-10 at 11 59 03 PM" src="https://github.com/user-attachments/assets/48c669bb-c11b-437b-90f2-158bba434aba" />
 <img width="1441" height="793" alt="Screenshot 2026-03-10 at 11 57 59 PM" src="https://github.com/user-attachments/assets/76ac1774-b1ee-4568-b7eb-d765034a5f57" />
+<img width="1051" height="804" alt="GitHub-style heatmap on display for visual progress" src="https://github.com/user-attachments/assets/aee9b02c-779a-41eb-a0c7-ff33c051844d" />
+
 
 
 ## Tech Stack
